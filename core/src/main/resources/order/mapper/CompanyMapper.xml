@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+ 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HapExam.core.order.mapper.CompanyMapper">
+    <resultMap id="BaseResultMap" type="HapExam.core.order.dto.Company" extends="com.hand.hap.mapper.StdMapper.STD">
+        <result column="COMPANY_ID" property="companyId" jdbcType="DECIMAL"/>
+        <result column="COMPANY_NUMBER" property="companyNumber" jdbcType="VARCHAR"/>
+        <result column="COMPANY_NAME" property="companyName" jdbcType="VARCHAR"/>
+    </resultMap>
+	
+	<select id="selectByCompany" parameterType="HapExam.core.order.dto.Company" resultMap="BaseResultMap">
+		SELECT f.company_id,
+		       f.company_number,
+		       f.company_name
+		  FROM hap_org_companys f
+		<where>
+        	<if test="companyId != null">
+                and f.company_id = #{companyId,jdbcType=DECIMAL}
+            </if>
+            <if test="companyNumber != null">
+                AND f.company_number like #{companyNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="companyName != null">
+                AND f.company_name like #{companyName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+     <!-- <insert id="insertFruit" parameterType="hbi.core.fruit.dto.Fruit" >
+    <selectKey resultType="Long" keyProperty="fruitId"
+        order="BEFORE">
+        select
+        fruit_b_s.nextVal
+        from dual
+        select _nextval('fruitId') from dual;
+    </selectKey>
+    INSERT INTO fruit_b
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fruitId != null" >
+        FRUIT_ID,
+      </if>
+      <if test="fruitName != null" >
+        FRUIT_NAME,
+      </if>
+      <if test="fruitDescription != null" >
+        FRUIT_DESCRIPTION,
+      </if>
+      <if test="fruitCode != null" >
+        FRUIT_CODE,
+      </if>
+      <if test="creationDate != null">
+		CREATION_DATE      
+	  </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fruitId != null" >
+        #{fruitId,jdbcType=DECIMAL},
+      </if>
+      <if test="fruitName != null" >
+        #{fruitName,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitDescription != null" >
+        #{fruitDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitCode != null" >
+        #{fruitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+		#{creationDate,jdbcType=TIMESTAMP},
+	  </if>
+    </trim>
+  </insert>
+    
+    <update id="updateFruit" parameterType="hbi.core.fruit.dto.Fruit" >
+    update fruit_b
+    <set >
+      <if test="fruitName != null" >
+        FRUIT_NAME = #{fruitName,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitCode != null" >
+        FRUIT_CODE = #{fruitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitDescription != null" >
+        FRUIT_DESCRIPTION = #{fruitDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+		CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+	  </if>
+    </set>
+    where FRUIT_ID = #{fruitId,jdbcType=DECIMAL}
+  </update> -->
+  
+  <!-- <delete id="deleteFruit" parameterType="hbi.core.fruit.dto.Fruit" >
+    delete from fruit_b t
+    where t.FRUIT_ID= #{fruitId,jdbcType=DECIMAL}
+  </delete> -->
+</mapper>

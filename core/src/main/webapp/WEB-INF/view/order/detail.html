@@ -1,0 +1,435 @@
+<#--
+ * description: TabDEMO
+ * version: 1.0
+ * #copyright#
+ *
+-->
+<#include "../include/head.html">
+<body style="padding: 10px;">
+<form id="form"></form>
+<br/>
+<div id="departmentGrid" name="departmentGrid"></div>
+<div id="job_cron_tabs" class="liger-tab">
+
+    <div tabid="employeeTab1" title="主要" lselected="true" disabled="true"> 
+        <div id="employeeGrid1" name="employeeGrid1"></div>
+    </div>
+    <div tabid="employeeTab2" title="其他" lselected="false" showclose="false">
+        <div id="employeeGrid2" name="employeeGrid2"></div>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+			
+      
+	        function queryEmployee(departmentId){
+	        	//Employee Grid 1
+	        		
+        		var form  = window['form'] = $("#form").ligerForm({
+	            inputWidth : 200,
+	            height : 50,
+	            fields : [{
+					label : '<@spring.message "HapExam.core.order.orderNumber"/>',
+					name : 'orderNumber',
+					newline : false,
+					width : 200,
+					editor : {
+						type : 'text'
+					},
+					validate : {
+						required : true
+					}
+				},{
+					display : '<@spring.message "HapExam.core.order.companyName"/>',
+					name : 'companyName',
+					textField : '选择数据',
+					type : "popup",
+					newline : false,
+					validate : {
+						required : true
+					},
+					editor : {
+						type : 'popup',
+						valueField : 'companyNumber',
+						textField : 'companyName',
+						valueField : 'companyName',
+						textField : 'companyName',
+						grid : {
+							columns : [
+									{
+										display : '<@spring.message "HapExam.core.order.companyNumber"/>',
+										name : "companyNumber",
+										align : 'left',
+										width : 200
+									},
+									{
+										display : '<@spring.message "HapExam.core.order.companyName"/>',
+										name : "companyName",
+										align : 'left',
+										width : 200
+									} ],
+							url : '${base.contextPath}/ass/company/query',
+							height : 350
+						},
+						condition : {	//条件
+							inputWidth : 150,
+							labelWidth : 70,
+							fields : [
+									{
+										display : '<@spring.message "HapExam.core.order.companyNumber"/>',
+										name : "companyNumber",
+										newline : false,
+										type : "text"
+									},{
+										display : '<@spring.message "HapExam.core.order.companyName"/>',
+										name : "companyName",
+										newline : false,
+										type : "text"
+									} ]
+						}
+					}
+				},{//lov
+					display : '<@spring.message "HapExam.core.order.customerName"/>',
+					name : 'customerName',
+					textField : '选择数据',
+					type : "popup",
+					newline : false,
+					validate : {
+						required : true
+					},
+					editor : {
+						type : 'popup',
+						valueField : 'customerNumber',
+						textField : 'customerName',
+						valueField : 'customerName',
+						textField : 'customerName',
+						grid : {
+							columns : [
+									{
+										display : '<@spring.message "HapExam.core.order.customerNumber"/>',
+										name : "customerNumber",
+										align : 'left',
+										width : 200
+									},
+									{
+										display : '<@spring.message "HapExam.core.order.customerName"/>',
+										name : "customerName",
+										align : 'left',
+										width : 200
+									}],
+							url : '${base.contextPath}/ass/customer/query',
+							height : 350
+						},
+						condition : {	//条件
+							inputWidth : 150,
+							labelWidth : 70,
+							fields : [
+									{
+										display : '<@spring.message "HapExam.core.order.customerNumber"/>',
+										name : "customerNumber",
+										newline : false,
+										type : "text"
+									},{
+										display : '<@spring.message "HapExam.core.order.customerName"/>',
+										name : "customerName",
+										newline : false,
+										type : "text"
+									} ]
+						}
+					}
+				},{
+					type : 'date',
+					label : '<@spring.message "HapExam.core.order.orderDate"/>',
+					name : 'orderDate',
+					newline : false,
+					width : 200,
+					validate : {
+						required : true
+					}
+				},{
+					type : 'text',
+					label : '<@spring.message "HapExam.core.order.orderMoney"/>',
+					name : 'orderMoney',
+					newline : false,
+					width : 200,
+				},{
+					type : 'text',
+					label : '<@spring.message "HapExam.core.order.orderStatus"/>',
+					name : 'orderStatus',
+					newline : false,
+					width : 120,
+				}],
+	            buttons: [{
+	                text    : '保存',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            },{
+	                text    : '提交',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            },{
+	                text    : '审批',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            },{
+	                text    : '拒绝',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            },{
+	                text    : '整单删除',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            },{
+	                text    : '单据打印',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            },{
+	                text    : '返回',
+	                disabled: false,
+	                width   : 60,
+	                click   : function () {
+	                }
+	            }]
+	        });  
+
+        		
+               	
+		        	var employeeGrid1 = window['employeeGrid1'] = $("#employeeGrid1").ligerGrid({
+		            unSetValidateAttr: false,
+		            columns          : [{
+						display : '<@spring.message "HapExam.core.order.itemCode"/>',
+						name : 'itemCode',
+						align : 'left',
+						width : 120,
+						textField : 'itemCode',
+						editor : {
+							type : 'popup',
+							valueField : 'itemCode',
+							textField : 'itemDescription',
+							valueField : 'itemCode',
+							textField : 'itemCode',
+							grid : {
+								columns : [
+										{
+											display : '<@spring.message "HapExam.core.order.itemCode"/>',
+											name : "itemCode",
+											align : 'left',
+											width : 200
+										},
+										{
+											display : '<@spring.message "HapExam.core.order.itemDescription"/>',
+											name : "itemDescription",
+											align : 'left',
+											width : 200
+										}],
+								url : '${base.contextPath}/ass/item/query',
+								height : 350
+							},
+							condition : {
+								inputWidth : 150,
+								labelWidth : 70,
+								fields : [
+										{
+											display : '<@spring.message "HapExam.core.order.itemCode"/>',
+											name : "inventoryItemId",
+											newline : true,
+											type : "text"
+										},
+										{
+											display : '<@spring.message "HapExam.core.order.itemDescription"/>',
+											name : "itemDescription",
+											newline : false,
+											type : "text"
+										}]
+							}
+						},
+						validate : {
+							required : true
+						}
+					},{
+						display : '<@spring.message "HapExam.core.order.itemDescription"/>',
+						name : 'itemDescription',
+						align : 'left',
+						width : 120
+					},{
+						display : '<@spring.message "HapExam.core.order.orderdQuantityUom"/>',
+						name : 'orderdQuantityUom',
+						align : 'left',
+						width : 120
+					},{
+						display : '<@spring.message "HapExam.core.order.orderdQuantity"/>',
+						name : 'orderdQuantity',
+						align : 'left',
+						width : 120,
+						editor : {
+							type : 'text'
+						},
+						validate : {
+							required : true
+						}
+					},{
+						display : '<@spring.message "HapExam.core.order.unitSellingPrice"/>',
+						name : 'unitSellingPrice',
+						align : 'left',
+						width : 120,
+						editor : {
+							type : 'text'
+						},
+						validate : {
+							required : true
+						}
+					},{
+						display : '<@spring.message "HapExam.core.order.orderMoney"/>',
+						name : 'orderMoney',
+						align : 'left',
+						width : 120,
+						editor : {
+							type : 'text'
+						},
+						validate : {
+							required : true
+						}
+					},{
+						display : '<@spring.message "HapExam.core.order.description"/>',
+						name : 'description',
+						align : 'left',
+						width : 120
+					}],
+		            url              : '${base.contextPath}/ass/item/query?departmentId='+departmentId,
+		            toolbar          : {
+		                items: [{
+		                    text   : '<@spring.message "hap.new"/>',
+		                    disable: false,
+		                    click  : function () {
+		                    	employeeGrid1.addRow({})
+		                    },
+		                    icon   : 'add'
+		                }, {
+		                    line: true
+		                }, {
+		                    text : '<@spring.message "hap.delete"/>',
+		                    click: function () {
+		                        Hap.gridDelete({
+		                            grid: employeeGrid1,
+		                            url : ''
+		                        })
+		
+		                    },
+		                    icon : 'delete'
+		                }, {
+		                    line: true
+		                }, {
+		                    text : '<@spring.message "hap.save"/>',
+		                    click: function () {
+		                        Hap.gridSave({
+		                            grid: employeeGrid1,
+		                            url : '${base.contextPath}/demo/employee/submit?departmentId='+departmentId
+		                        })
+		                        queryEmployee(departmentId);
+		                        //employeeGrid1.reload();
+		                    },
+		                    icon : 'save'
+		                }]
+		            },
+		            enabledEdit      : true,
+		            width            : '99%',
+		            height           : '310',
+		            checkbox         : true
+		        });
+	        	
+	        	//Employee Grid 2
+		        	var employeeGrid2 = window['employeeGrid2'] = $("#employeeGrid2").ligerGrid({
+	                    unSetValidateAttr: false,
+	                    columns          : [{
+							display : '<@spring.message "HapExam.core.order.addition1"/>',
+							name : 'addition1',
+							align : 'left',
+							width : 120
+						},{
+							display : '<@spring.message "HapExam.core.order.addition2"/>',
+							name : 'addition2',
+							align : 'left',
+							width : 120
+						},{
+							display : '<@spring.message "HapExam.core.order.addition3"/>',
+							name : 'addition3',
+							align : 'left',
+							width : 120
+						},{
+							display : '<@spring.message "HapExam.core.order.addition4"/>',
+							name : 'addition4',
+							align : 'left',
+							width : 120
+						},{
+							display : '<@spring.message "HapExam.core.order.addition5"/>',
+							name : 'addition5',
+							align : 'left',
+							width : 120
+						}],
+	                    url              : '${base.contextPath}/ass/item/query?departmentId='+departmentId,
+	                    toolbar          : {
+	                        items: [{
+	                            text   : '<@spring.message "hap.new"/>',
+	                            disable: false,
+	                            click  : function () {
+	                            	employeeGrid2.addRow({})
+	                            },
+	                            icon   : 'add'
+	                        }, {
+	                            line: true
+	                        }, {
+	                            text : '<@spring.message "hap.delete"/>',
+	                            click: function () {
+	                                Hap.gridDelete({
+	                                    grid: employeeGrid2,
+	                                    url : ''
+	                                })
+	        
+	                            },
+	                            icon : 'delete'
+	                        }, {
+	                            line: true
+	                        }, {
+	                            text : '<@spring.message "hap.save"/>',
+	                            click: function () {
+	                                Hap.gridSave({
+	                                    grid: employeeGrid2, 
+	                                    url : '${base.contextPath}/demo/employee/submit?departmentId='+departmentId
+	                                })
+	                                //重新加载grid
+	                                queryEmployee(departmentId);
+	                                //employeeGrid2.reload();
+	                            },
+	                            icon : 'save'
+	                        }]
+	                    },
+	                    enabledEdit      : true,
+	                    width            : '99%',
+	                    height           : '310',
+	                    checkbox         : true
+	                });
+	        }
+	        
+     $(function () {
+    	 queryEmployee(0);
+    	 //$("#tab2").css({"display":"none"});
+    	 var obj = $("#tab2");
+    	 obj.attr({"disabled":true});
+     });
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<#-- * description: Fruit.html * version: 1.0 *
+author:taotao.xu@hand-china.com * #{copyright}# * --> <#include
+"../include/head.html">
+<body style="padding: 10px;">
+	<form id="companyForm"></form>
+	<div id="companyGrid" style="margin: 0; padding: 0"></div>
+	<script type="text/javascript">
+		$(function() {
+			//debugger;
+			window.downloadFile = function () {
+	            window.popWin = $.ligerDialog.open({
+	                title : 'downloadFile',
+	                width : 720,
+	                height: 550,
+	                url   : 'downloadFile.html'
+	            });
+	        };
+	        window.editFunctionResources = function (id) {
+	            window.popWin = $.ligerDialog.open({
+	                title : '订单明细',
+	                width : 1180,
+	                height: 570,
+	                url   : 'detail.html?headerId'+id
+	            });
+	        };
+	        
+	        
+	      
+	        
+	        var sourceData = [];
+			function sourceToJson(data) {
+				this.orderStatus = data.orderStatus;
+
+			}
+			$.ajax({
+				url : '${base.contextPath}/ass/header/query',
+				type : 'POST',
+				contentType : "application/json;charset=utf-8",
+				cache : false,
+				dataType : 'json',
+				async : false,
+				success : function(data) {
+					for (var i = 0; i < data.rows.length; i++) {
+
+						sourceData.push(new sourceToJson(data.rows[i]));
+
+					}
+				}
+			});
+	        
+			window['companyForm'] = $("#companyForm")
+					.ligerForm(
+							{
+								fields : [
+								          {
+											display : '<@spring.message "HapExam.core.order.companyName"/>',
+											name : 'companyName',
+											textField : '选择数据',
+											type : "popup",
+											newline : false,
+											options : {
+												type : 'popup',
+												valueField : 'companyNumber',
+												textField : 'companyName',
+												valueField : 'companyName',
+												textField : 'companyName',
+												grid : {
+													columns : [
+															{
+																display : '<@spring.message "HapExam.core.order.companyNumber"/>',
+																name : "companyNumber",
+																align : 'left',
+																width : 200
+															},
+															{
+																display : '<@spring.message "HapExam.core.order.companyName"/>',
+																name : "companyName",
+																align : 'left',
+																width : 200
+															} ],
+													url : '${base.contextPath}/ass/company/query',
+													height : 350
+												},
+												condition : {	//条件
+													inputWidth : 150,
+													labelWidth : 70,
+													fields : [
+															{
+																display : '<@spring.message "HapExam.core.order.companyNumber"/>',
+																name : "companyNumber",
+																newline : false,
+																type : "text"
+															},{
+																display : '<@spring.message "HapExam.core.order.companyName"/>',
+																name : "companyName",
+																newline : false,
+																type : "text"
+															} ]
+												}
+											}
+										},{//lov
+											display : '<@spring.message "HapExam.core.order.customerName"/>',
+											name : 'customerName',
+											textField : '选择数据',
+											type : "popup",
+											newline : false,
+											options : {
+												type : 'popup',
+												valueField : 'customerNumber',
+												textField : 'customerName',
+												valueField : 'customerName',
+												textField : 'customerName',
+												grid : {
+													columns : [
+															{
+																display : '<@spring.message "HapExam.core.order.customerNumber"/>',
+																name : "customerNumber",
+																align : 'left',
+																width : 200
+															},
+															{
+																display : '<@spring.message "HapExam.core.order.customerName"/>',
+																name : "customerName",
+																align : 'left',
+																width : 200
+															},{
+																display : '<@spring.message "HapExam.core.order.companyName"/>',
+																name : "companyName",
+																newline : false,
+																type : "text"
+															} ],
+													url : '${base.contextPath}/ass/customer/query',
+													height : 350
+												},
+												condition : {	//条件
+													inputWidth : 150,
+													labelWidth : 70,
+													fields : [
+															{
+																display : '<@spring.message "HapExam.core.order.customerNumber"/>',
+																name : "customerNumber",
+																newline : false,
+																type : "text"
+															},{
+																display : '<@spring.message "HapExam.core.order.customerName"/>',
+																name : "customerName",
+																newline : false,
+																type : "text"
+															} ]
+												}
+											}
+										},{
+											type : 'text',
+											label : '<@spring.message "HapExam.core.order.headerId"/>',
+											name : 'headerId',
+											newline : false,
+											width : 120
+										},{//lov
+											display : '<@spring.message "HapExam.core.order.itemDescription"/>',
+											name : 'itemDescription',
+											textField : '选择数据',
+											type : "popup",
+											newline : false,
+											options : {
+												type : 'popup',
+												valueField : 'itemCode',
+												textField : 'itemDescription',
+												valueField : 'itemDescription',
+												textField : 'itemDescription',
+												grid : {
+													columns : [
+															{
+																display : '<@spring.message "HapExam.core.order.itemCode"/>',
+																name : "itemCode",
+																align : 'left',
+																width : 200
+															},
+															{
+																display : '<@spring.message "HapExam.core.order.itemDescription"/>',
+																name : "itemDescription",
+																align : 'left',
+																width : 200
+															} ],
+													url : '${base.contextPath}/ass/item/query',
+													height : 350
+												},
+												condition : {	//条件
+													inputWidth : 150,
+													labelWidth : 70,
+													fields : [
+															{
+																display : '<@spring.message "HapExam.core.order.itemCode"/>',
+																name : "itemCode",
+																newline : false,
+																type : "text"
+															},{
+																display : '<@spring.message "HapExam.core.order.itemDescription"/>',
+																name : "itemDescription",
+																newline : false,
+																type : "text"
+															} ]
+												}
+											}
+										},{
+											display : '<@spring.message "HapExam.core.order.orderStatus"/>',
+											name : "orderStatus",
+											newline : false,
+											type : 'select',
+											comboboxName : "orderStatus",
+											width : 120,
+											options : {
+												valueField : 'orderStatus',
+												textField : 'orderStatus',
+												data : sourceData
+											}
+										}],
+								buttons : [ {
+									text : '<@spring.message "hap.query"/>',
+									disabled : false,
+									width : 60,
+									click : function() {
+										Hap.gridQuery({
+											form : companyForm,
+											grid : companyGrid
+										})
+									}
+								},{
+									text : '<@spring.message "summary.reset"/>',
+									disabled : false,
+									width : 60,
+								},{
+									text : '<@spring.message "summary.download"/>',
+									disabled : false,
+									width : 60,
+									click : downloadFile
+								} ]
+							});
+
+			window['companyGrid'] = $("#companyGrid")
+					.ligerGrid(
+							{
+								unSetValidateAttr : false,
+								columns : [
+										{
+											display : '<@spring.message "HapExam.core.order.headerId"/>',
+											name : 'headerId',
+											align : 'left',
+											width : 120,
+											isSort : false,
+						                    render : function (rowdata) {						                    	
+						                        if (!!rowdata.headerId) {
+						                            return '<a href="#" onclick="editFunctionResources(' + rowdata.headerId + ')">'+rowdata.orderNumber+'</a>'
+						                        }
+						                    }
+
+										},{
+											display : '<@spring.message "HapExam.core.order.companyName"/>',
+											name : 'companyName',
+											align : 'left',
+											width : 120
+										},{
+											display : '<@spring.message "HapExam.core.order.customerName"/>',
+											name : 'customerName',
+											align : 'left',
+											width : 120
+										},{
+											display : '<@spring.message "HapExam.core.order.orderDate"/>',
+											name : 'orderDate',
+											align : 'left',
+											width : 120
+										} ,{
+											display : '<@spring.message "HapExam.core.order.orderStatus"/>',
+											name : 'orderStatus',
+											align : 'left',
+											width : 120
+										}  ,{
+											display : '<@spring.message "HapExam.core.order.orderMoney"/>',
+											name : 'orderMoney',
+											align : 'left',
+											width : 120
+										} ],
+ 								url : '${base.contextPath}/ass/header/query',	//查询
+								toolbar : {		//增删改查
+									items : [
+											{
+												text : '<@spring.message "hap.new"/>',
+												disable : false,
+												click : editFunctionResources,
+												icon : 'add'
+											}]
+								},
+								enabledEdit : true,
+								width : '99%',
+								height : '98%',
+								checkbox : true
+							});
+		});
+	</script>
+</body>
+</html>

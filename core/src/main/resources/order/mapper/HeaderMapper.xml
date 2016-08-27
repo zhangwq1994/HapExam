@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- ~ #{copyright}# -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HapExam.core.order.mapper.HeaderMapper">
+	<resultMap id="BaseResultMap" type="HapExam.core.order.dto.Header"
+		extends="com.hand.hap.mapper.StdMapper.STD">
+		<result column="HEADER_ID" property="headerId" jdbcType="DECIMAL" />
+		<result column="ORDER_NUMBER" property="orderNumber" jdbcType="VARCHAR" />
+		<result column="COMPANY_NAME" property="companyName" jdbcType="VARCHAR" />
+		<result column="ORDER_DATE" property="orderDate" jdbcType="TIMESTAMP" />
+		<result column="ORDER_STATUS" property="orderStatus" jdbcType="VARCHAR" />
+		<result column="CUSTOMER_NAME" property="customerName" jdbcType="VARCHAR" />
+		<result column="ORDERD_QUANTITY" property="orderQuantity" jdbcType="DECIMAL" />
+		<result column="UNIT_SELLING_PRICE" property="unitSellingPrice" jdbcType="DECIMAL" />
+		<result column="ORDER_MONEY" property="orderMoney" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="selectByHeader" parameterType="HapExam.core.order.dto.Header"
+		resultMap="BaseResultMap">
+		SELECT
+		h3.HEADER_ID,h3.ORDER_NUMBER,h1.COMPANY_NAME,h2.CUSTOMER_NAME,h3.ORDER_DATE,h3.ORDER_STATUS,h4.ORDERD_QUANTITY*h4.UNIT_SELLING_PRICE ORDER_MONEY
+		from
+		hap_org_companys h1,hap_ar_customers h2,hap_om_order_headers h3,hap_om_order_lines h4
+		WHERE
+		h3.CUSTOMER_ID=h2.CUSTOMER_ID and h3.COMPANY_ID=h1.COMPANY_ID and h3.HEADER_ID=h4.HEADER_ID
+
+		<if test="customerId != null">
+			and h3.customer_id = #{customerId,jdbcType=DECIMAL}
+		</if>
+		<if test="companyId != null">
+			AND h3.company_id = #{companyId,jdbcType=DECIMAL}
+		</if>
+		<if test="headerId != null">
+			AND h3.header_id =
+			#{headerId,jdbcType=DECIMAL}
+		</if>
+	
+		<if test="orderDate != null">
+			AND h3.order_date =
+			#{orderDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="orderStatus != null">
+			AND h3.order_status like #{orderStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="orderNumber != null">
+			AND h3.order_number like #{orderNumber,jdbcType=VARCHAR}
+		</if>
+
+		<if test="companyName != null">
+			AND h1.company_name like #{companyName,jdbcType=VARCHAR}
+		</if>
+
+		<if test="customerName != null">
+			AND h2.customer_name like #{companyName,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+<!-- <?xml version="1.0" encoding="UTF-8" ?>
+
+ 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HapExam.core.order.mapper.HeaderMapper">
+    <resultMap id="BaseResultMap" type="HapExam.core.order.dto.Header" extends="com.hand.hap.mapper.StdMapper.STD">
+        <result column="HEADER_ID" property="headerId" jdbcType="DECIMAL"/>
+        <result column="ORDER_NUMBER" property="orderNumber" jdbcType="VARCHAR"/>
+        <result column="COMPANY_ID" property="companyId" jdbcType="DECIMAL"/>       
+        <result column="ORDER_DATE" property="orderDate" jdbcType="TIMESTAMP" />
+        <result column="ORDER_STATUS" property="orderStatus" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_ID" property="customerId" jdbcType="DECIMAL"/>
+    </resultMap>
+	
+	<select id="selectByHeader" parameterType="HapExam.core.order.dto.Header" resultMap="BaseResultMap">
+		SELECT f.header_id,
+		       f.order_number,
+		       f.company_id,
+		       f.order_date,
+		       f.order_status,
+		       f.customer_id
+		  FROM hap_om_order_headers f,hap_org_companys h
+		  WHERE f.customer_id = h.company_id
+		<where>
+        	<if test="headerId != null">
+                and f.header_id = #{headerId,jdbcType=DECIMAL}
+            </if>
+            <if test="orderNumber != null">
+                AND f.order_number like #{orderNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="companyId != null">
+                and f.company_id = #{companyId,jdbcType=DECIMAL}
+            </if>
+            <if test="orderDate != null">
+                AND f.order_date = #{orderDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="orderStatus != null">
+                AND f.order_status like #{orderStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="customerId != null">
+                and f.customer_id = #{customerId,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+    
+
+</mapper> -->

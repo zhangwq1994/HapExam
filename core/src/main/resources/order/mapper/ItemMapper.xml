@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+ 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HapExam.core.order.mapper.ItemMapper">
+    <resultMap id="BaseResultMap" type="HapExam.core.order.dto.Item" extends="com.hand.hap.mapper.StdMapper.STD">
+        <result column="ITEM_CODE" property="itemCode" jdbcType="VARCHAR"/>
+        <result column="ITEM_DESCRIPTION" property="itemDescription" jdbcType="VARCHAR"/>
+        <result column="ORDER_QUANTITY_UOM" property="orderdQuantityUom" jdbcType="VARCHAR"/>
+        <result column="ORDERD_QUANTITY" property="orderdQuantity" jdbcType="DECIMAL"/>
+        <result column="UNIT_SELLING_PRICE" property="unitSellingPrice" jdbcType="DECIMAL"/>
+        <result column="ORDER_MONEY" property="orderMoney" jdbcType="DECIMAL"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="ADDITION1" property="addition1" jdbcType="VARCHAR"/>
+        <result column="ADDITION2" property="addition2" jdbcType="VARCHAR"/>
+        <result column="ADDITION3" property="addition3" jdbcType="VARCHAR"/>
+        <result column="ADDITION4" property="addition4" jdbcType="VARCHAR"/>
+        <result column="ADDITION5" property="addition5" jdbcType="VARCHAR"/>
+       
+    </resultMap>
+	
+	<select id="selectByItem" parameterType="HapExam.core.order.dto.Item" resultMap="BaseResultMap">
+		SELECT 		 f.item_code,
+		       		 f.item_description,
+					 h.ORDER_QUANTITY_UOM,
+					 h.ORDERD_QUANTITY,
+					 h.UNIT_SELLING_PRICE,
+					 h.ORDERD_QUANTITY*h.UNIT_SELLING_PRICE ORDER_MONEY,
+					 h.DESCRIPTION,
+					 h.ADDITION1,
+					h.ADDITION2,
+					h.ADDITION3,
+					h.ADDITION4,
+					h.ADDITION5
+		  FROM hap_inv_inventory_items f,
+					 hap_om_order_lines h
+			WHERE f.INVENTORY_ITEM_ID=h.INVENTORY_ITEM_ID
+			<if test="itemCode != null">
+                AND f.item_code like #{itemCode,jdbcType=VARCHAR}
+            </if>
+        	
+            <if test="itemDescription != null">
+                AND f.item_description like #{itemDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="orderdQuantityUom != null">
+                and h.ORDER_QUANTITY_UOM = #{orderdQuantityUom,jdbcType=VARCHAR}
+            </if>
+             <if test="orderdQuantity != null">
+                and h.ORDERD_QUANTITY = #{orderdQuantity,jdbcType=DECIMAL}
+            </if>
+            <if test="unitSellingPrice != null">
+                and h.UNIT_SELLING_PRICE = #{unitSellingPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="orderMoney != null">
+                and h.ORDER_MONEY = #{orderMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="description != null">
+                and h.DESCRIPTION = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="addition1 != null">
+                and h.ADDITION1 = #{addition1,jdbcType=VARCHAR}
+            </if>
+             <if test="addition2 != null">
+                and h.ADDITION2 = #{addition2,jdbcType=VARCHAR}
+            </if>
+             <if test="addition3 != null">
+                and h.ADDITION3 = #{addition3,jdbcType=VARCHAR}
+            </if>
+             <if test="addition4 != null">
+                and h.ADDITION4 = #{addition4,jdbcType=VARCHAR}
+            </if>
+             <if test="addition5 != null">
+                and h.ADDITION5 = #{addition5,jdbcType=VARCHAR}
+            </if>
+    </select>
+    
+     <!-- <insert id="insertFruit" parameterType="hbi.core.fruit.dto.Fruit" >
+    <selectKey resultType="Long" keyProperty="fruitId"
+        order="BEFORE">
+        select
+        fruit_b_s.nextVal
+        from dual
+        select _nextval('fruitId') from dual;
+    </selectKey>
+    INSERT INTO fruit_b
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fruitId != null" >
+        FRUIT_ID,
+      </if>
+      <if test="fruitName != null" >
+        FRUIT_NAME,
+      </if>
+      <if test="fruitDescription != null" >
+        FRUIT_DESCRIPTION,
+      </if>
+      <if test="fruitCode != null" >
+        FRUIT_CODE,
+      </if>
+      <if test="creationDate != null">
+		CREATION_DATE      
+	  </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fruitId != null" >
+        #{fruitId,jdbcType=DECIMAL},
+      </if>
+      <if test="fruitName != null" >
+        #{fruitName,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitDescription != null" >
+        #{fruitDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitCode != null" >
+        #{fruitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+		#{creationDate,jdbcType=TIMESTAMP},
+	  </if>
+    </trim>
+  </insert>
+    
+    <update id="updateFruit" parameterType="hbi.core.fruit.dto.Fruit" >
+    update fruit_b
+    <set >
+      <if test="fruitName != null" >
+        FRUIT_NAME = #{fruitName,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitCode != null" >
+        FRUIT_CODE = #{fruitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fruitDescription != null" >
+        FRUIT_DESCRIPTION = #{fruitDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+		CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+	  </if>
+    </set>
+    where FRUIT_ID = #{fruitId,jdbcType=DECIMAL}
+  </update> -->
+  
+  <!-- <delete id="deleteFruit" parameterType="hbi.core.fruit.dto.Fruit" >
+    delete from fruit_b t
+    where t.FRUIT_ID= #{fruitId,jdbcType=DECIMAL}
+  </delete> -->
+</mapper>
